@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: studentjournal
+  datasource:
+    url: jdbc:h2:mem:student_db
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
