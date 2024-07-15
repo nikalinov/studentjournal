@@ -30,11 +30,11 @@ public class StudentController {
 
     @GetMapping("/students/edit")
     public String edit() {
-        return "redirect:students/edit";
+        return "students/edit";
     }
 
     @GetMapping("/students/delete")
     public String delete() {
-        return "redirect:students/delete";
+        return "students/delete";
     }
 }
