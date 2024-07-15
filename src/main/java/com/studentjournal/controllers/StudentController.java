@@ -20,12 +20,12 @@ public class StudentController {
 
     @GetMapping("/students/add")
     public String add() {
-        return "redirect:students/add";
+        return "students/add";
     }
 
     @GetMapping("/students/view")
     public String view() {
-        return "redirect:students/view";
+        return "students/view";
     }
 
     @GetMapping("/students/edit")
