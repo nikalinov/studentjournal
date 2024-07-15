@@ -17,4 +17,24 @@ public class StudentController {
         model.addAttribute("message", "AAAAAAAAAAAA");
         return "students/list";
     }
+
+    @GetMapping("/students/add")
+    public String add() {
+        return "redirect:students/add";
+    }
+
+    @GetMapping("/students/view")
+    public String view() {
+        return "redirect:students/view";
+    }
+
+    @GetMapping("/students/edit")
+    public String edit() {
+        return "redirect:students/edit";
+    }
+
+    @GetMapping("/students/delete")
+    public String delete() {
+        return "redirect:students/delete";
+    }
 }
