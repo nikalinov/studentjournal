@@ -9,10 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+import java.util.UUID;
+
 
 @Controller
 public class StudentController {
     private final StudentService service;
+    private final int DEFAULTPAGESIZE = 1;
 
     @Autowired
     public StudentController(final StudentService service) {
@@ -28,7 +32,7 @@ public class StudentController {
     public String getStudents(
             final Model model,
             @RequestParam(value="page", defaultValue="0") final int pageNum,
-            @RequestParam(value="size", defaultValue="10")  final int pageSize
+            @RequestParam(value="size", defaultValue= "" + DEFAULTPAGESIZE)  final int pageSize
     ) {
         final Page<Student> page = service.getStudents(pageNum, pageSize);
         final int currPageNum = page.getNumber();
@@ -38,6 +42,7 @@ public class StudentController {
         model.addAttribute("students", page.getContent());
         model.addAttribute("prevPageNum", prevPageNum);
         model.addAttribute("nextPageNum", nextPageNum);
+        model.addAttribute("pageSize", pageSize);
         return "students/list";
     }
 
@@ -47,7 +52,9 @@ public class StudentController {
     }
 
     @GetMapping("/students/view")
-    public String view() {
+    public String view(final Model model, @RequestParam(name="id") final UUID id) {
+        final Optional<Student> record = service.getStudent(id);
+        model.addAttribute("student", record.orElseGet(Student::new));
         return "students/view";
     }
 

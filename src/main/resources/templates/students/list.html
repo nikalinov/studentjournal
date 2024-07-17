@@ -36,14 +36,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="student: ${students}">
-                <td>1</td>
+            <tr th:each="student, iter: ${students}">
+                <td th:text="${iter.count + (prevPageNum + 1) * pageSize}"></td>
                 <td th:text="${student.firstName}">John</td>
                 <td th:text="${student.lastName}">Doe</td>
                 <td>
-                    <a type="button" class="btn btn-secondary" href="th:href='@{/students/list}'">View</a>
-                    <a type="button" class="btn btn-warning" href="th:href='@{/order/list}'">Edit</a>
-                    <a type="button" class="btn btn-danger" href="th:href='@{/order/list}'">Delete</a>
+                    <a type="button" class="btn btn-secondary" th:href="'view?id=' + ${student.id}">View</a>
+                    <a type="button" class="btn btn-warning" th:href="'edit?id=' + ${student.id}">Edit</a>
+                    <a type="button" class="btn btn-danger" th:href="'delete?id=' + ${student.id}">Delete</a>
                 </td>
             </tr>
             </tbody>
@@ -55,9 +55,9 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li class="page-item disabled" th:if="${prevPageNum == -1}"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item" th:if="${prevPageNum > -1}"><a class="page-link" th:href="'?page' + ${prevPageNum}">Previous</a></li>
+                            <li class="page-item" th:if="${prevPageNum > -1}"><a class="page-link" th:href="'?page=' + ${prevPageNum}">Previous</a></li>
                             <li class="page-item disabled" th:if="${nextPageNum == -1}"><a class="page-link" href="#">Next</a></li>
-                            <li class="page-item" th:if="${prevPageNum > -1}"><a class="page-link" th:href="'?page' + ${nextPageNum}">Next</a></li>
+                            <li class="page-item" th:if="${nextPageNum > -1}"><a class="page-link" th:href="'?page=' + ${nextPageNum}">Next</a></li>
                         </ul>
                     </nav>
                 </div>
