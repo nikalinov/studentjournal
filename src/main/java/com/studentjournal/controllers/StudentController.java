@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +34,8 @@ public class StudentController {
     @GetMapping("/students/list")
     public String getStudents(
             final Model model,
-            @RequestParam(value="page", defaultValue="0") final int pageNum,
-            @RequestParam(value="size", defaultValue= "" + DEFAULTPAGESIZE)  final int pageSize
+            @RequestParam(name="page", defaultValue="0") final int pageNum,
+            @RequestParam(name="size", defaultValue= "" + DEFAULTPAGESIZE)  final int pageSize
     ) {
         final Page<Student> page = service.getStudents(pageNum, pageSize);
         final int currPageNum = page.getNumber();
@@ -68,9 +69,18 @@ public class StudentController {
     }
 
     @GetMapping("/students/delete")
-    public String delete() {
+    public String deleteGet(final Model model, @RequestParam(name="id") final UUID id) {
+        final Optional<Student> record = service.getStudent(id);
+        model.addAttribute("student", record.orElseGet(Student::new));
         return "students/delete";
     }
+
+    @PostMapping("/students/delete")
+    public String deletePost(final Model model, @RequestParam(name="id") final UUID id) {
+        service.delete(id);
+        return "redirect:list";
+    }
+
 
     @PostMapping("/students/save")
     public String save(final Model model, @ModelAttribute(name="student") final Student student) {
