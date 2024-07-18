@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
@@ -59,12 +61,20 @@ public class StudentController {
     }
 
     @GetMapping("/students/edit")
-    public String edit() {
+    public String edit(final Model model, @RequestParam(name="id") final UUID id) {
+        final Optional<Student> record = service.getStudent(id);
+        model.addAttribute("student", record.orElseGet(Student::new));
         return "students/edit";
     }
 
     @GetMapping("/students/delete")
     public String delete() {
         return "students/delete";
+    }
+
+    @PostMapping("/students/save")
+    public String save(final Model model, @ModelAttribute(name="student") final Student student) {
+        service.save(student);
+        return "redirect:list";
     }
 }
