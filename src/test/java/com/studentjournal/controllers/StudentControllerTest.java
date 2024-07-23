@@ -20,6 +20,7 @@ import javax.swing.*;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.hasProperty;
@@ -45,6 +46,18 @@ class StudentControllerTest {
                 .andExpect(model().attribute("student", hasProperty("id", is(student.getId()))))
                 .andExpect(model().attribute("student", hasProperty("firstName", is(student.getFirstName()))))
                 .andExpect(model().attribute("student", hasProperty("lastName", is(student.getLastName()))));
+    }
+
+    @Test
+    public void returnsNoStudentIfDoesNotExist() throws Exception {
+        final UUID id = UUID.randomUUID();
+        given(service.getStudent(id)).willReturn(Optional.empty());
+        mvc.perform(get("/students/view").param("id", id.toString()))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("student", is(notNullValue())))
+                .andExpect(model().attribute("student", hasProperty("id", is(nullValue()))))
+                .andExpect(model().attribute("student", hasProperty("firstName", is(nullValue()))))
+                .andExpect(model().attribute("student", hasProperty("lastName", is(nullValue()))));
     }
 
     @BeforeEach
