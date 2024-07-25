@@ -23,10 +23,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/").permitAll().anyRequest().authenticated()
+                        .requestMatchers(
+                                "/", "/images/**", "/js/**", "/css/**", "/vendor/**", "/fonts/**")
+                        .permitAll().anyRequest().authenticated()
                 )
-                .formLogin((form) -> form.permitAll())
-                .logout(LogoutConfigurer::permitAll);
+                .formLogin((form) -> form.loginPage("/login").permitAll())
+                .logout((logout) -> logout.logoutUrl("/auth/logout"));
 
         return http.build();
     }
