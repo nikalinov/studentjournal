@@ -27,8 +27,8 @@ public class WebSecurityConfig {
                                 "/", "/images/**", "/js/**", "/css/**", "/vendor/**", "/fonts/**")
                         .permitAll().anyRequest().authenticated()
                 )
-                .formLogin((form) -> form.loginPage("/login").permitAll())
-                .logout((logout) -> logout.logoutUrl("/auth/logout"));
+                .formLogin((form) -> form.loginPage("/login").permitAll().defaultSuccessUrl("/students/list",true))
+                .logout((logout) -> logout.logoutUrl("/logout"));
 
         return http.build();
     }
